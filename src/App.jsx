@@ -43,6 +43,16 @@ function App() {
             merchant: 'Bank ATM',
             category: 'Withdrawal'
         },
+        {
+            id: 5,
+            date: '2023-10-29',
+            description: 'ATM Withdrawal',
+            withdrawal: 200.0,
+            fraud: false,
+            warning: true,
+            merchant: 'Bank ATM',
+            category: 'Withdrawal'
+        },
     ];
 
     return (
