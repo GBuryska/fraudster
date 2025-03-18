@@ -1,5 +1,8 @@
-import './App.css'
-import TransactionList from "./TransactionList.jsx";
+import "./app.css"
+import TransactionList from "./components/TransactionList.jsx";
+import Navbar from "./components/Navbar.jsx";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Sidebar from "./components/Sidebar.jsx";
 
 function App() {
     const transactions = [
@@ -56,10 +59,15 @@ function App() {
     ];
 
     return (
-        <div>
-            <h1>Transaction History</h1>
-            <TransactionList transactions={transactions} />
-        </div>
+        <Router>
+            <Navbar accountName="Garrett Buryska" className="navbar"/>
+            <div className="main-container">
+                <Sidebar className="sidebar"/>
+                <Routes>
+                    <Route path="/" element={<TransactionList transactions={transactions} className="transaction"/> } />
+                </Routes>
+            </div>
+        </Router>
     );
 }
 
