@@ -8,7 +8,7 @@ function Navbar() {
     return (
         <nav className="navbar">
             <div className="navbar-left">
-                <span className="app-name">Fraudster</span>
+                <span className="app-name">Jerome</span>
             </div>
             <div className="navbar-right">
                 <span className="account-name">{user.name}</span>
