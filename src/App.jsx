@@ -1,72 +1,22 @@
-import "./app.css"
-import TransactionList from "./components/TransactionList.jsx";
-import Navbar from "./components/Navbar.jsx";
+import TransactionList from "./pages/TransactionList.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Sidebar from "./components/Sidebar.jsx";
+import Login from "./pages/Login.jsx";
+import PrivateRoutes from "./utils/PrivateRoutes.jsx";
+import {AuthProvider} from "./utils/AuthContext.jsx";
 
 function App() {
-    const transactions = [
-        {
-            id: 1,
-            date: '2023-10-27',
-            description: 'Grocery Store',
-            withdrawal: 50.0,
-            fraud: false,
-            warning: false,
-            merchant: 'Local Groceries',
-            category:'Food'
-        },
-        {
-            id: 2,
-            date: '2023-10-28',
-            description: 'Salary Deposit',
-            deposit: 2000.0,
-            fraud: false,
-            warning: false,
-            merchant: 'Company Inc',
-            category: 'Income'
-        },
-        {
-            id: 3,
-            date: '2023-10-26',
-            description: 'Online Purchase',
-            withdrawal: 100.0,
-            fraud: true,
-            warning: false,
-            merchant: 'Example Online Store',
-            category: 'Shopping'
-        },
-        {
-            id: 4,
-            date: '2023-10-29',
-            description: 'ATM Withdrawal',
-            withdrawal: 200.0,
-            fraud: false,
-            warning: true,
-            merchant: 'Bank ATM',
-            category: 'Withdrawal'
-        },
-        {
-            id: 5,
-            date: '2023-10-29',
-            description: 'ATM Withdrawal',
-            withdrawal: 200.0,
-            fraud: false,
-            warning: true,
-            merchant: 'Bank ATM',
-            category: 'Withdrawal'
-        },
-    ];
 
     return (
         <Router>
-            <Navbar accountName="Garrett Buryska" className="navbar"/>
-            <div className="main-container">
-                <Sidebar className="sidebar"/>
+            <AuthProvider>
                 <Routes>
-                    <Route path="/" element={<TransactionList transactions={transactions} className="transaction"/> } />
+                    <Route path="/" element={<Login/>}/>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route element={<PrivateRoutes />}>
+                        <Route path="/transactions" element={<TransactionList/> } />
+                    </Route>
                 </Routes>
-            </div>
+            </AuthProvider>
         </Router>
     );
 }

@@ -1,5 +1,5 @@
 body {
-  margin: 0; /* Remove default body margin */
+  margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
@@ -10,4 +10,137 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
   monospace;
+}
+
+
+
+
+.sidebar-page {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+.transaction-table {
+  width: 100%;
+  height: 100%;
+  border-collapse: collapse;
+  color: black;
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+
+  .expanded-row td {
+    background-color: #f9f9f9;
+  }
+
+  .transaction-details {
+    margin-bottom: 5px;
+  }
+
+  .red-row {
+    background-color: #ffe6e6;
+  }
+
+  .orange-row {
+    background-color: #fff0e6;
+  }
+
+  .green-row {
+    background-color: #e6ffe6;
+  }
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  background: #333;
+  height: calc(100vh - 60px);
+  padding: 0 20px 20px;
+  box-sizing: border-box;
+
+  a {
+    color: whitesmoke;
+    padding: 5px 0;
+    text-decoration: none;
+  }
+
+  a:hover {
+    color: #FF746C;
+  }
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .navbar-left {
+    font-size: 1.5em;
+    font-weight: bold;
+    padding: 0 20px;
+    color: #FF746C;
+  }
+
+  .navbar-right {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+    color: whitesmoke;
+  }
+
+  .logout-button {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .logout-button:hover {
+    background-color: #c9302c;
+  }
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(to right, lightblue, lightcyan);
+
+  .login-form {
+    background-color: whitesmoke;
+    color: black;
+    padding: 20px;
+    border: black solid 1px;
+    border-radius: 10px;
+  }
+
+  .login-fields {
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+  }
 }
