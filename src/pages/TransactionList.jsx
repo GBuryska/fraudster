@@ -27,7 +27,7 @@ function TransactionList() {
     );
 
     const getRowColor = (transaction) => {
-        if (transaction.transaction_flag === "denied") {
+        if (transaction.transaction_flag === "declined") {
             return 'red-row';
         } else if (transaction.transaction_flag === "warning") {
             return 'orange-row';
