@@ -5,6 +5,8 @@ import {AuthProvider} from "./utils/AuthContext.jsx";
 import FraudTransactions from "./pages/FraudTransactions.jsx";
 import PrivateRoutesBank from "./utils/PrivateRoutesBank.jsx";
 import PrivateRoutesCustomer from "./utils/PrivateRoutesCustomer.jsx";
+import CreateTransaction from "./pages/CreateTransaction.jsx";
+import CreateTransactions from "./pages/CreateTransactions.jsx";
 
 function App() {
 
@@ -14,6 +16,8 @@ function App() {
                 <Routes>
                     <Route path="/" element={<Login/>}/>
                     <Route path="/login" element={<Login/>}/>
+                    <Route path="createtransaction" element={<CreateTransaction/>} />
+                    <Route path="createtransactions" element={<CreateTransactions/>} />
                     <Route element={<PrivateRoutesCustomer />}>
                         <Route path="/transactions" element={<TransactionList/> } />
                     </Route>

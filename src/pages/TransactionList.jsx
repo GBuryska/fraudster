@@ -2,18 +2,21 @@ import React, {useEffect, useState} from 'react';
 import Navbar from "../components/Navbar.jsx";
 import Sidebar from "../components/Sidebar.jsx";
 import {getTransactions} from "../utils/TransactionActions.js";
+import {useAuth} from "../utils/UseAuth.jsx";
 
 function TransactionList() {
     const [transactions, setTransactions] = useState([]);
     const [expandedTransactions, setExpandedTransactions] = useState({});
+    const {user} = useAuth()
 
     useEffect(() => {
         async function fetchData() {
-            const data = await getTransactions();
+            const data = await getTransactions(user.$id);
+            console.log(data);
             setTransactions(data);
         }
         fetchData();
-    }, []);
+    }, [user]);
 
     const toggleTransactionDetails = (id) => {
         setExpandedTransactions((prevExpanded) => ({
@@ -23,13 +26,13 @@ function TransactionList() {
     };
 
     const sortedTransactions = [...transactions].sort(
-        (a, b) => new Date(b.transaction_date) - new Date(a.transaction_date)
+        (a, b) => new Date(b.transaction_timestamp) - new Date(a.transaction_timestamp)
     );
 
     const getRowColor = (transaction) => {
-        if (transaction.transaction_flag === "declined") {
+        if (transaction.fraud_score <= 70) {
             return 'red-row';
-        } else if (transaction.transaction_flag === "warning") {
+        } else if (transaction.fraud_score <= 80) {
             return 'orange-row';
         } else {
             return 'green-row';
@@ -54,33 +57,33 @@ function TransactionList() {
                     </thead>
                     <tbody>
                     {sortedTransactions.map((transaction) => (
-                        <React.Fragment key={transaction.$id}>
+                        <React.Fragment key={transaction.$transaction_id}>
                             <tr className={getRowColor(transaction)}>
                                 <td>{`****-****-****-${transaction.card_number.slice(-4)}`}</td>
-                                <td>{new Date(transaction.transaction_date).toLocaleDateString('en-US')}</td>
+                                <td>{new Date(transaction.transaction_timestamp).toLocaleString()}</td>
                                 <td>{transaction.transaction_type}</td>
-                                <td>{transaction.amount > 0 ? `$${transaction.amount.toFixed(2)}` : ''}</td>
-                                <td>{transaction.amount < 0 ? `$${transaction.amount.toFixed(2).slice(1)}` : ''}</td>
+                                <td>{transaction.transaction_amount > 0 ? `$${transaction.transaction_amount.toFixed(2)}` : ''}</td>
+                                <td>{transaction.transaction_amount < 0 ? `$${transaction.transaction_amount.toFixed(2).slice(1)}` : ''}</td>
                                 <td>
-                                    <button onClick={() => toggleTransactionDetails(transaction.$id)}>
-                                        {expandedTransactions[transaction.$id] ? 'Collapse' : 'Expand'}
+                                    <button onClick={() => toggleTransactionDetails(transaction.$transaction_id)}>
+                                        {expandedTransactions[transaction.$transaction_id] ? 'Collapse' : 'Expand'}
                                     </button>
                                 </td>
                             </tr>
-                            {expandedTransactions[transaction.$id] && (
+                            {expandedTransactions[transaction.$transaction_id] && (
                                 <tr className="expanded-row">
                                     <td colSpan="6">
                                         <div className="transaction-details">
-                                            <strong>Transaction ID:</strong> {transaction.$id}
+                                            <strong>Transaction ID:</strong> {transaction.$transaction_id}
                                         </div>
                                         <div className="transaction-details">
                                             <strong>Merchant:</strong> {transaction.merchant_name || 'N/A'}
                                         </div>
                                         <div className="transaction-details">
-                                            <strong>Description:</strong> {transaction.description || 'N/A'}
+                                            <strong>Currency:</strong> {transaction.transaction_currency || 'N/A'}
                                         </div>
                                         <div className="transaction-details">
-                                            <strong>Location:</strong> {transaction.location || 'N/A'}
+                                            <strong>Location:</strong> {transaction.transaction_location || 'N/A'}
                                         </div>
                                     </td>
                                 </tr>

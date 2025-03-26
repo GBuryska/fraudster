@@ -1,13 +1,15 @@
 export interface Transaction {
-    $id: string;
-    user_id: string;
+    $transaction_id: string;
+    customer_id: string;
     card_number: string;
-    transaction_date: string;
-    amount: bigint;
-    merchant_name: string;
+    transaction_timestamp: string;
+    transaction_amount: number;
+    transaction_currency: string;
     transaction_type: string;
-    description: string;
-    location: string;
-    transaction_flag: string;
+    transaction_status: string;
+    merchant_id: string;
+    merchant_name: string;
+    transaction_location: string;
+    fraud_score: number;
 }
 
