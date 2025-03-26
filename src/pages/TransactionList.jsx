@@ -42,15 +42,15 @@ function TransactionList() {
             <div className="sidebar-page">
                 <Sidebar />
                 <table className="transaction-table">
-                    <thead>
-                    <tr>
-                        <th>Card Number</th>
-                        <th>Date</th>
-                        <th>Category</th>
-                        <th>Deposits</th>
-                        <th>Withdrawals</th>
-                        <th>Details</th>
-                    </tr>
+                    <thead className="transaction-head">
+                        <tr>
+                            <th>Card Number</th>
+                            <th>Date</th>
+                            <th>Category</th>
+                            <th>Deposits</th>
+                            <th>Withdrawals</th>
+                            <th>Details</th>
+                        </tr>
                     </thead>
                     <tbody>
                     {sortedTransactions.map((transaction) => (

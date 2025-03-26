@@ -1,9 +1,22 @@
+import {useAuth} from "../utils/UseAuth.jsx";
+
 function Sidebar() {
-    return (
-        <nav className="sidebar">
-            <a href="/transactions">Transactions</a>
-        </nav>
-    )
+    const {user} = useAuth()
+
+    if (user.labels.includes('customer')) {
+        return (
+            <nav className="sidebar">
+                <a href="/transactions">Transactions</a>
+            </nav>
+        )
+    } else if (user.labels.includes('bank')) {
+        return (
+            <nav className="sidebar">
+                <a href="/fraudtransactions">Fraud Transactions</a>
+            </nav>
+        )
+    }
+
 }
 
 export default Sidebar;

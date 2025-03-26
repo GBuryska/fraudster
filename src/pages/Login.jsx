@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import {useAuth} from "../utils/UseAuth.jsx";
 
 
@@ -12,7 +11,13 @@ const Login = () => {
 
     useEffect(() => {
         if (user){
-            navigate('/transactions')
+            if (user.labels.includes('customer')) {
+                navigate('/transactions')
+            } else if (user.labels.includes('bank')) {
+                navigate('/fraudtransactions')
+            } else if (user.labels.includes('admin')) {
+                navigate('/admintransactions')
+            }
         }
     })
 
