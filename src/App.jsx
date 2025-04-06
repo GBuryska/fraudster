@@ -7,6 +7,7 @@ import PrivateRoutesBank from "./utils/PrivateRoutesBank.jsx";
 import PrivateRoutesCustomer from "./utils/PrivateRoutesCustomer.jsx";
 import CreateTransaction from "./pages/CreateTransaction.jsx";
 import CreateTransactions from "./pages/CreateTransactions.jsx";
+import CreateCustomer from "./pages/CreateCustomer.jsx";
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
                     </Route>
                     <Route element={<PrivateRoutesBank />}>
                         <Route path="/fraudtransactions" element={<FraudTransactions/>} />
+                        <Route path="/createcustomer" element={<CreateCustomer/>} />
                     </Route>
                 </Routes>
             </AuthProvider>

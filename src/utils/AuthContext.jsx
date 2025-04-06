@@ -1,6 +1,7 @@
 import {createContext, useEffect, useState} from "react";
 import {account} from "../appwriteConfig";
 import {useNavigate} from "react-router-dom";
+import { ID } from 'appwrite';
 
 const AuthContext = createContext()
 
@@ -34,7 +35,19 @@ export const AuthProvider = ({children}) => {
         setUser(null)
     }
 
-    const registerUser = async () => {}
+    const registerUser = async (userInfo) => {
+        setLoading(true)
+
+        try{
+
+            await account.create(ID.unique(), userInfo.email, userInfo.password, userInfo.name);
+            
+        }catch(error){
+            console.error(error)
+        }
+
+        setLoading(false)
+    }
 
     const checkUserStatus = async () => {
         try{

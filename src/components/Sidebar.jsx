@@ -13,6 +13,7 @@ function Sidebar() {
         return (
             <nav className="sidebar">
                 <a href="/fraudtransactions">Fraud Transactions</a>
+                <a href="/createcustomer">Create Customer</a>
             </nav>
         )
     }

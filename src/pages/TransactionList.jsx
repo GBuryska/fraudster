@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import Navbar from "../components/Navbar.jsx";
 import Sidebar from "../components/Sidebar.jsx";
-import {getTransactions} from "../utils/TransactionActions.js";
+import {getTransactionById} from "../utils/TransactionActions.js";
 import {useAuth} from "../utils/UseAuth.jsx";
 
 function TransactionList() {
@@ -11,7 +11,7 @@ function TransactionList() {
 
     useEffect(() => {
         async function fetchData() {
-            const data = await getTransactions(user.$id);
+            const data = await getTransactionById(user.$id);
             console.log(data);
             setTransactions(data);
         }
