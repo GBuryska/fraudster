@@ -1,4 +1,4 @@
-import {databases, functions} from "../appwriteConfig"
+import {databases} from "../appwriteConfig"
 import {Transaction} from "../types";
 import { ID, Query } from 'appwrite'
 
