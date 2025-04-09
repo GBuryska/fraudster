@@ -13,3 +13,14 @@ export interface Transaction {
     fraud_score: number;
 }
 
+// add the settings here
+
+export interface Settings {
+    customer_id: string;
+}
+
+export interface Users {
+    customer_id?: string;
+    manager_id?: string;
+    bank_id: string;
+}

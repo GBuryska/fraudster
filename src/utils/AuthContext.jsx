@@ -46,7 +46,7 @@ export const AuthProvider = ({children}) => {
             console.error(error)
         }
 
-        // store new user to customer database
+        // store new user to user database
         // store user settings to settings database
 
         setLoading(false)
