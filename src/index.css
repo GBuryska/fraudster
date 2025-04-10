@@ -192,3 +192,8 @@ code {
     padding: 5px;
   }
 }
+
+.load_more {
+  width: 100%;
+  padding: 10px;
+}

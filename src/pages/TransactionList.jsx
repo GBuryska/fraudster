@@ -4,17 +4,25 @@ import {getTransactions} from "../utils/TransactionActions.js";
 import {useAuth} from "../utils/UseAuth.jsx";
 import NavCus from "../components/NavCus.jsx";
 
+const LOAD_AMOUNT = 20;
+
 function TransactionList() {
     const [transactions, setTransactions] = useState([]);
     const [popUp, setPopUp] = useState(null);
+    const [index, setIndex] = useState(0);
+    const [atEnd, setAtEnd] = useState(false);
     const {user} = useAuth()
 
-    useEffect(() => {
-        async function fetchData() {
-            const data = await getTransactions(user.$id);
-            console.log(data);
-            setTransactions(data);
+    async function fetchData() {
+        const data = await getTransactions(user.$id, index, LOAD_AMOUNT);
+        if(data.length < LOAD_AMOUNT) {
+            setAtEnd(true);
         }
+        setTransactions(transactions.concat(data));
+        setIndex(index+LOAD_AMOUNT);
+    }
+
+    useEffect(() => {
         fetchData();
     }, [user]);
 
@@ -89,6 +97,11 @@ function TransactionList() {
                     ))}
                     </tbody>
                 </table>
+                {!atEnd &&
+                    <button onClick={fetchData} className={'load_more'}>
+                        Load More...
+                    </button>
+                }
             </div>
         </>
     );

@@ -4,13 +4,15 @@ import { ID, Query } from 'appwrite'
 
 
 // @ts-ignore
-export async function getTransactions(userId: string): Promise<Transaction[]> {
+export async function getTransactions(userId: string, index: number, limit: number): Promise<Transaction[]> {
     const response = await databases.listDocuments(
         '67e04d26003294165c25',
         '67e04d2f0004159d8c8a',
         [
-            Query.limit(20),
-            Query.equal('customer_id', userId)
+            Query.offset(index),
+            Query.limit(limit),
+            Query.equal('customer_id', userId),
+            Query.orderDesc('transaction_timestamp')
         ]
     );
 
