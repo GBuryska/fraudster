@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import {useAuth} from "../utils/UseAuth.jsx";
 import Navbar from "../components/Navbar.jsx";
-import Sidebar from "../components/Sidebar.jsx";
 
 const CreateCustomer = () => {
     const {registerUser} = useAuth()
@@ -22,8 +21,7 @@ const CreateCustomer = () => {
     return (
         <div className="login">
             <Navbar className="navbar" />
-            <div className="sidebar-page">
-                <Sidebar />
+            <div className="page">
                 <form onSubmit={handleSubmit} ref={registerForm} className={"login-form"}>
                     <div className={"login-fields"}>
                         <label>Email:</label>

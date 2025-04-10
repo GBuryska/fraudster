@@ -15,10 +15,53 @@ code {
 
 
 
-.sidebar-page {
+.page {
+  padding-left: 20vh;
+  padding-right: 20vh;
+}
+
+.popup-container {
+  position: fixed;
+  top: 100px;
+  left: 20vh;
+  right: 20vh;
+  height: calc(100% - 100px);
   display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
+  margin: 20px 0;
+  justify-content: center;
+  z-index: 200;
+  .green-row {
+    background-color: #e6ffe6;
+  }
+  .red-row {
+    background-color: #ffe6e6;
+  }
+  .orange-row {
+    background-color: #fff0e6;
+  }
+  .popup {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    width: fit-content;
+    border: 2px grey solid;
+    padding: 10px;
+    .popup-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      button {
+        border: none;
+        background: none;
+        font-size: 1.5EM;
+      }
+    }
+  }
+}
+
+.popup-visible {
+  filter: blur(5px);
 }
 
 .transaction-table {
@@ -26,11 +69,6 @@ code {
   height: 100%;
   border-collapse: collapse;
   color: black;
-
-  .transaction-head {
-    position: sticky;
-    top: 60px;
-  }
 
   th, td {
     border: 1px solid #ddd;
@@ -43,16 +81,11 @@ code {
   }
 
   button {
-    padding: 5px 10px;
+    text-decoration: underline;
+    background-color: inherit;
+    border: none;
     cursor: pointer;
-  }
-
-  .expanded-row td {
-    background-color: #f9f9f9;
-  }
-
-  .transaction-details {
-    margin-bottom: 5px;
+    color: blue;
   }
 
   .red-row {
@@ -65,27 +98,6 @@ code {
 
   .green-row {
     background-color: #e6ffe6;
-  }
-}
-
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  background: #333;
-  height: calc(100vh - 60px);
-  padding: 0 20px 20px;
-  box-sizing: border-box;
-  position: sticky;
-  top: 60px;
-
-  a {
-    color: whitesmoke;
-    padding: 5px 0;
-    text-decoration: none;
-  }
-
-  a:hover {
-    color: #FF746C;
   }
 }
 
@@ -125,6 +137,35 @@ code {
 
   .logout-button:hover {
     background-color: #c9302c;
+  }
+}
+
+.navcus {
+  padding: 0 20vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: sticky;
+  height: 40px;
+  top: 60px;
+  z-index: 100;
+  background-color: grey;
+  border-bottom: 1px solid #333;
+  .navbar-option{
+    background-color: whitesmoke;
+    width: calc(80vh / 3);
+    text-align: center;
+    border: 1px solid #333;
+    border-radius: 10px;
+    a {
+      color: #FF746C;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      color: #c9302c;
+    }
   }
 }
 

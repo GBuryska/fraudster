@@ -23,4 +23,5 @@ export interface Users {
     customer_id?: string;
     manager_id?: string;
     bank_id: string;
+    card_number?: number;
 }

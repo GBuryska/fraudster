@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {useAuth} from "../utils/UseAuth.jsx";
 
 function Navbar() {

@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import Navbar from "../components/Navbar.jsx";
-import Sidebar from "../components/Sidebar.jsx";
 import {getTransactions} from "../utils/TransactionActions.js";
 import {useAuth} from "../utils/UseAuth.jsx";
+import NavCus from "../components/NavCus.jsx";
 
 function TransactionList() {
     const [transactions, setTransactions] = useState([]);
-    const [expandedTransactions, setExpandedTransactions] = useState({});
+    const [popUp, setPopUp] = useState(null);
     const {user} = useAuth()
 
     useEffect(() => {
@@ -17,13 +17,6 @@ function TransactionList() {
         }
         fetchData();
     }, [user]);
-
-    const toggleTransactionDetails = (id) => {
-        setExpandedTransactions((prevExpanded) => ({
-            ...prevExpanded,
-            [id]: !prevExpanded[id],
-        }));
-    };
 
     const sortedTransactions = [...transactions].sort(
         (a, b) => new Date(b.transaction_timestamp) - new Date(a.transaction_timestamp)
@@ -39,55 +32,59 @@ function TransactionList() {
         }
     };
 
+    const openTransaction = (transaction) => {
+        setPopUp(transaction);
+        console.log(transaction);
+    }
+
+    const closeTransaction = () => {
+        setPopUp(null);
+    }
+
     return (
         <>
             <Navbar className="navbar" />
-            <div className="sidebar-page">
-                <Sidebar />
-                <table className="transaction-table">
+            <NavCus />
+            <div className="page">
+                {popUp &&
+                    <div className={'popup-container'}>
+                        <div className={`popup ${getRowColor(popUp)}`}>
+                            <div className={'popup-header'}>
+                                <strong>{`ID: ${popUp.$transaction_id}`}</strong>
+                                <button onClick={closeTransaction}>
+                                    &times;
+                                </button>
+                            </div>
+                            <span>{`Card Number: ${popUp.card_number.replace(/[-\s]/g, '').match(/\d{1,4}/g)?.join('-')}`}</span>
+                            <span>{`Date: ${new Date(popUp.transaction_timestamp).toLocaleString()}`}</span>
+                            <span>{`Type: ${popUp.transaction_type}`}</span>
+                            <span style={{color: 'green'}}>{popUp.transaction_amount > 0 && `Deposit: $${popUp.transaction_amount.toFixed(2)}`}</span>
+                            <span style={{color: 'red'}}>{popUp.transaction_amount < 0 && `Withdrawal: $${popUp.transaction_amount.toFixed(2).slice(1)}`}</span>
+                            <span>{`Merchant: ${popUp.merchant_name}`}</span>
+                            <span>{`Location: ${popUp.transaction_location}`}</span>
+                        </div>
+                    </div>
+                }
+                <table className={`transaction-table ${popUp ? 'popup-visible' : ''}`}>
                     <thead className="transaction-head">
                         <tr>
-                            <th>Card Number</th>
+                            <th>Transaction ID</th>
                             <th>Date</th>
-                            <th>Category</th>
+                            <th>Description</th>
                             <th>Deposits</th>
                             <th>Withdrawals</th>
-                            <th>Details</th>
                         </tr>
                     </thead>
                     <tbody>
                     {sortedTransactions.map((transaction) => (
                         <React.Fragment key={transaction.$transaction_id}>
                             <tr className={getRowColor(transaction)}>
-                                <td>{`****-****-****-${transaction.card_number.slice(-4)}`}</td>
-                                <td>{new Date(transaction.transaction_timestamp).toLocaleString()}</td>
+                                <td><button onClick={() => openTransaction(transaction)}>{transaction.$transaction_id}</button></td>
+                                <td>{new Date(transaction.transaction_timestamp).toLocaleDateString()}</td>
                                 <td>{transaction.transaction_type}</td>
                                 <td>{transaction.transaction_amount > 0 ? `$${transaction.transaction_amount.toFixed(2)}` : ''}</td>
                                 <td>{transaction.transaction_amount < 0 ? `$${transaction.transaction_amount.toFixed(2).slice(1)}` : ''}</td>
-                                <td>
-                                    <button onClick={() => toggleTransactionDetails(transaction.$transaction_id)}>
-                                        {expandedTransactions[transaction.$transaction_id] ? 'Collapse' : 'Expand'}
-                                    </button>
-                                </td>
                             </tr>
-                            {expandedTransactions[transaction.$transaction_id] && (
-                                <tr className="expanded-row">
-                                    <td colSpan="6">
-                                        <div className="transaction-details">
-                                            <strong>Transaction ID:</strong> {transaction.$transaction_id}
-                                        </div>
-                                        <div className="transaction-details">
-                                            <strong>Merchant:</strong> {transaction.merchant_name || 'N/A'}
-                                        </div>
-                                        <div className="transaction-details">
-                                            <strong>Currency:</strong> {transaction.transaction_currency || 'N/A'}
-                                        </div>
-                                        <div className="transaction-details">
-                                            <strong>Location:</strong> {transaction.transaction_location || 'N/A'}
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
                         </React.Fragment>
                     ))}
                     </tbody>
