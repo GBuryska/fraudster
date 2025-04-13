@@ -1,9 +1,11 @@
 import React, { useRef } from 'react'
 import {useAuth} from "../utils/UseAuth.jsx";
 import Navbar from "../components/Navbar.jsx";
+import {ID} from "appwrite";
+import {createCustomer} from "../utils/UserActions.js";
 
 const CreateCustomer = () => {
-    const {registerUser} = useAuth()
+    const {user, registerUser} = useAuth()
 
     const registerForm = useRef(null)
 
@@ -12,14 +14,18 @@ const CreateCustomer = () => {
         const email = registerForm.current.email.value
         const password = registerForm.current.password.value
         const name = registerForm.current.name.value
+        const card_number = registerForm.current.card_number.value
+        const manager_id = user.$id;
+        const customer_id = ID.unique();
 
-        const userInfo = {email, password, name}
+        const userInfo = {customer_id, email, password, name, manager_id, card_number}
 
         registerUser(userInfo)
+        createCustomer(userInfo)
     }
 
     return (
-        <div className="login">
+        <>
             <Navbar className="navbar" />
             <div className="page">
                 <form onSubmit={handleSubmit} ref={registerForm} className={"login-form"}>
@@ -29,7 +35,7 @@ const CreateCustomer = () => {
                             required
                             type="email"
                             name="email"
-                            placeholder="Enter your email..."
+                            placeholder="Customer email..."
                         />
                     </div>
                     <div className={"login-fields"}>
@@ -38,7 +44,7 @@ const CreateCustomer = () => {
                             required
                             type="text"
                             name="password"
-                            placeholder="Enter your password..."
+                            placeholder="Customer password..."
                         />
                     </div>
                     <div className={"login-fields"}>
@@ -47,20 +53,28 @@ const CreateCustomer = () => {
                             required
                             type="text"
                             name="name"
-                            placeholder="Enter your name..."
+                            placeholder="Customer name..."
+                        />
+                    </div>
+                    <div className={"login-fields"}>
+                        <label>Card Number:</label>
+                        <input
+                            required
+                            type="text"
+                            name="card_number"
+                            placeholder="Card number..."
                         />
                     </div>
 
                     <div className={"login-fields"}>
                         <input
                             type="submit"
-                            value="Login"
-                            className="login-button"
+                            className="submit"
                         />
                     </div>
                 </form>
             </div>
-        </div>
+        </>
     )
 }
 

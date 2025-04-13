@@ -39,6 +39,6 @@ export interface Settings {
 export interface Users {
     customer_id?: string;
     manager_id?: string;
-    bank_id: string;
-    card_number?: number;
+    bank_id?: string;
+    card_number?: string;
 }

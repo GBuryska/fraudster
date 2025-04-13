@@ -1,7 +1,6 @@
 import {createContext, useEffect, useState} from "react";
 import {account} from "../appwriteConfig";
 import {useNavigate} from "react-router-dom";
-import { ID } from 'appwrite';
 
 const AuthContext = createContext()
 
@@ -40,7 +39,7 @@ export const AuthProvider = ({children}) => {
 
         try{
 
-            await account.create(ID.unique(), userInfo.email, userInfo.password, userInfo.name);
+            await account.create(userInfo.customer_id, userInfo.email, userInfo.password, userInfo.name);
             
         }catch(error){
             console.error(error)
@@ -71,7 +70,7 @@ export const AuthProvider = ({children}) => {
 
     return(
         <AuthContext.Provider value={contextData}>
-            {loading ? <p>Loading...</p> : children}
+            {loading ? <>Loading...</> : children}
         </AuthContext.Provider>
     )
 }

@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import {useAuth} from "../utils/UseAuth.jsx";
+import {role} from "../utils/UserActions.js";
 
 
 const Login = () => {
@@ -9,17 +10,27 @@ const Login = () => {
 
     const loginForm = useRef(null)
 
-    useEffect(() => {
-        if (user){
-            if (user.labels.includes('customer')) {
-                navigate('/transactions')
-            } else if (user.labels.includes('bank')) {
-                navigate('/fraudtransactions')
-            } else if (user.labels.includes('admin')) {
-                navigate('/admintransactions')
+    const [isLoading, setIsLoading] = useState(false)
+
+    useEffect(  () => {
+        setIsLoading(true)
+        if (user) {
+            async function checkLogin() {
+                const userRole = await role(user.$id);
+                if (userRole === 'customer') {
+                    navigate('/transactions')
+                } else if (userRole === 'manager') {
+                    navigate('/create-customer')
+                } else if (userRole === 'bank') {
+                    navigate('/admintransactions')
+                } else {
+                    navigate('/login')
+                }
             }
+            checkLogin()
         }
-    })
+        setIsLoading(false)
+    }, [user, navigate])
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -32,36 +43,41 @@ const Login = () => {
     }
 
     return (
-        <div className="login">
-            <form onSubmit={handleSubmit} ref={loginForm} className={"login-form"}>
-                <div className={"login-fields"}>
-                    <label>Email:</label>
-                    <input
-                        required
-                        type="email"
-                        name="email"
-                        placeholder="Enter your email..."
-                    />
-                </div>
-                <div className={"login-fields"}>
-                    <label>Password:</label>
-                    <input
-                        required
-                        type="password"
-                        name="password"
-                        placeholder="Enter your password..."
-                    />
-                </div>
+        <>
+        {isLoading
+            ? <p>Loading...</p>
+            : <div className="login">
+                <form onSubmit={handleSubmit} ref={loginForm} className={"login-form"}>
+                    <div className={"login-fields"}>
+                        <label>Email:</label>
+                        <input
+                            required
+                            type="email"
+                            name="email"
+                            placeholder="Enter your email..."
+                        />
+                    </div>
+                    <div className={"login-fields"}>
+                        <label>Password:</label>
+                        <input
+                            required
+                            type="password"
+                            name="password"
+                            placeholder="Enter your password..."
+                        />
+                    </div>
 
-                <div className={"login-fields"}>
-                    <input
-                        type="submit"
-                        value="Login"
-                        className="login-button"
-                    />
-                </div>
-            </form>
-        </div>
+                    <div className={"login-fields"}>
+                        <input
+                            type="submit"
+                            value="Login"
+                            className="login-button"
+                        />
+                    </div>
+                </form>
+            </div>
+        }
+        </>
     )
 }
 

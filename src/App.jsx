@@ -28,7 +28,7 @@ function App() {
                     </Route>
                     <Route element={<PrivateRoutesBank />}>
                         <Route path="/fraudtransactions" element={<FraudTransactions/>} />
-                        <Route path="/createcustomer" element={<CreateCustomer/>} />
+                        <Route path="/create-customer" element={<CreateCustomer/>} />
                     </Route>
                 </Routes>
             </AuthProvider>
