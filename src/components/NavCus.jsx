@@ -1,12 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function NavCus() {
-
+function NavCus(props) {
+    const { selected } = props;
+    const navigate = useNavigate();
     return (
         <nav className="navcus">
-            <div className={'navbar-option'}><a href={'/transactions'}>Transactions</a></div>
-            <div className={'navbar-option'}><a href={'/review'}>Review</a></div>
-            <div className={'navbar-option'}><a href={'/settings'}>Settings</a></div>
+            <button className={`navbar-option ${selected === 'transactions' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/transactions')}>Transactions</button>
+            <button className={`navbar-option ${selected === 'review' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/review')}>Review</button>
+            <button className={`navbar-option ${selected === 'settings' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/settings')}>Settings</button>
         </nav>
     );
 }

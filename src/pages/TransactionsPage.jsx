@@ -6,7 +6,7 @@ import NavCus from "../components/NavCus.jsx";
 
 const LOAD_AMOUNT = 20;
 
-function TransactionList() {
+function TransactionsPage() {
     const [transactions, setTransactions] = useState([]);
     const [popUp, setPopUp] = useState(null);
     const [index, setIndex] = useState(0);
@@ -52,7 +52,7 @@ function TransactionList() {
     return (
         <>
             <Navbar className="navbar" />
-            <NavCus />
+            <NavCus selected='transactions'/>
             <div className="page">
                 {popUp &&
                     <div className={'popup-container'}>
@@ -107,4 +107,4 @@ function TransactionList() {
     );
 }
 
-export default TransactionList;
+export default TransactionsPage;

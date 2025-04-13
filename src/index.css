@@ -16,15 +16,18 @@ code {
 
 
 .page {
-  padding-left: 20vh;
-  padding-right: 20vh;
+  margin-left: 10vw;
+  margin-right: 10vw;
+  background-color: grey;
+  border: 2px solid black;
+  margin-bottom: 20px;
 }
 
 .popup-container {
   position: fixed;
   top: 100px;
-  left: 20vh;
-  right: 20vh;
+  left: 10vw;
+  right: 10vw;
   height: calc(100% - 100px);
   display: flex;
   margin: 20px 0;
@@ -141,31 +144,29 @@ code {
 }
 
 .navcus {
-  padding: 0 20vh;
+  padding: 0 10vw;
   display: flex;
   justify-content: space-around;
   align-items: center;
-  position: sticky;
   height: 40px;
   top: 60px;
   z-index: 100;
-  background-color: grey;
-  border-bottom: 1px solid #333;
+  background-color: white;
+  .selected {
+    color: grey;
+  }
+  .notSelected {
+    color: #FF746C;
+  }
   .navbar-option{
-    background-color: whitesmoke;
-    width: calc(80vh / 3);
+    background-color: #333;
+    width: calc(80vw / 3);
     text-align: center;
-    border: 1px solid #333;
-    border-radius: 10px;
-    a {
-      color: #FF746C;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
-    a:hover {
-      color: #c9302c;
-    }
+    border: 1px solid grey;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1em;
   }
 }
 
@@ -196,4 +197,41 @@ code {
 .load_more {
   width: 100%;
   padding: 10px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 5%;
+  h3 {
+    text-align: center;
+  }
+  .section-settings {
+    width: 45%;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 10px 20px 10px;
+    .settings-header {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .settings-set {
+      display: flex;
+      flex-direction: column;
+      justify-content: left;
+      .setting {
+        padding: 5px 0 0 10px;
+        .sub-setting {
+          font-style: italic;
+          font-size: .85em;
+          padding: 5px 0 0 10px;
+        }
+      }
+    }
+  }
 }

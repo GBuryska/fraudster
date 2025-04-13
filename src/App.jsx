@@ -1,4 +1,4 @@
-import TransactionList from "./pages/TransactionList.jsx";
+import TransactionsPage from "./pages/TransactionsPage.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import {AuthProvider} from "./utils/AuthContext.jsx";
@@ -8,6 +8,8 @@ import PrivateRoutesCustomer from "./utils/PrivateRoutesCustomer.jsx";
 import CreateTransaction from "./pages/CreateTransaction.jsx";
 import CreateTransactions from "./pages/CreateTransactions.jsx";
 import CreateCustomer from "./pages/CreateCustomer.jsx";
+import SettingsPage from "./pages/SettingsPage.jsx";
+import ReviewPage from "./pages/ReviewPage.jsx";
 
 function App() {
 
@@ -20,7 +22,9 @@ function App() {
                     <Route path="createtransaction" element={<CreateTransaction/>} />
                     <Route path="createtransactions" element={<CreateTransactions/>} />
                     <Route element={<PrivateRoutesCustomer />}>
-                        <Route path="/transactions" element={<TransactionList/> } />
+                        <Route path="/transactions" element={<TransactionsPage/> } />
+                        <Route path="/settings" element={<SettingsPage/>} />
+                        <Route path="/review" element={<ReviewPage/>} />
                     </Route>
                     <Route element={<PrivateRoutesBank />}>
                         <Route path="/fraudtransactions" element={<FraudTransactions/>} />
