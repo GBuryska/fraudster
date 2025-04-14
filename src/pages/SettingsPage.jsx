@@ -121,7 +121,7 @@ function SettingsPage() {
                                 </div>
 
                                     <div className='setting'>
-                                        <label>Block Interstate Purchases by Selecting State: </label>
+                                        <label>Block Interstate Purchases: </label>
 
                                             <div className='sub-setting'>
                                                 <label>Home State: </label>
@@ -136,7 +136,7 @@ function SettingsPage() {
 
 
                                     <div className='setting'>
-                                        <label>Block Intercity Purchases by Selecting City: </label>
+                                        <label>Block Intercity Purchases: </label>
 
                                             <div className='sub-setting'>
                                                 <label>Home City: </label>
