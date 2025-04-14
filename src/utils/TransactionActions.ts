@@ -31,6 +31,7 @@ export async function getTransactions(userId: string, index: number, limit: numb
             merchant_name: doc.merchant_name,
             transaction_location: doc.transaction_location,
             fraud_score: doc.fraud_score,
+            online: doc.online
         }));
 }
 

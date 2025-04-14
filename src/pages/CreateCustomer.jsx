@@ -3,6 +3,7 @@ import {useAuth} from "../utils/UseAuth.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {ID} from "appwrite";
 import {createCustomer} from "../utils/UserActions.js";
+import {createSettings} from "../utils/SettingsActions.js";
 
 const CreateCustomer = () => {
     const {user, registerUser} = useAuth()
@@ -22,6 +23,7 @@ const CreateCustomer = () => {
 
         registerUser(userInfo)
         createCustomer(userInfo)
+        createSettings(customer_id)
     }
 
     return (

@@ -1,14 +1,14 @@
 import {createContext, useEffect, useState} from "react";
 import {account} from "../appwriteConfig";
-import {useNavigate} from "react-router-dom";
+import {role} from "./UserActions.js";
 
 const AuthContext = createContext()
 
 export const AuthProvider = ({children}) => {
-    const navigate = useNavigate()
 
     const [loading, setLoading] = useState(true)
     const [user, setUser] = useState(null)
+    const [userRole, setUserRole] = useState(null)
 
     useEffect(() => {
         checkUserStatus()
@@ -21,7 +21,8 @@ export const AuthProvider = ({children}) => {
             await account.createEmailPasswordSession(userInfo.email, userInfo.password)
             let accountDetails = await account.get();
             setUser(accountDetails)
-            navigate('/transactions')
+            const theRole = await role(accountDetails.$id);
+            setUserRole(theRole)
         }catch(error){
             console.error(error)
         }
@@ -38,7 +39,6 @@ export const AuthProvider = ({children}) => {
         setLoading(true)
 
         try{
-
             await account.create(userInfo.customer_id, userInfo.email, userInfo.password, userInfo.name);
             
         }catch(error){
@@ -55,6 +55,8 @@ export const AuthProvider = ({children}) => {
         try{
             let accountDetails = await account.get();
             setUser(accountDetails)
+            const theRole = await role(accountDetails.$id);
+            setUserRole(theRole)
         }catch(error){
             console.error(error)
         }
@@ -63,6 +65,7 @@ export const AuthProvider = ({children}) => {
 
     const contextData = {
         user,
+        userRole,
         loginUser,
         logoutUser,
         registerUser

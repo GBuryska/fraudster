@@ -11,6 +11,7 @@ export interface Transaction {
     merchant_name: string;
     transaction_location: string;
     fraud_score: number;
+    online: boolean;
 }
 
 // add the settings here
@@ -19,7 +20,6 @@ export interface Settings {
     customer_id: string;
     start_time?: string;
     end_time?: string;
-    online_purchases?: boolean;
     fraudscore_detection?: boolean;
     daily_limit?: number;
     weekly_limit?: number;
@@ -27,9 +27,7 @@ export interface Settings {
     purchase_limit?: number;
     block_online_purchases?: boolean;
     block_international_purchases?: boolean;
-    block_interstate_purchases?: boolean;
     home_state?: string;
-    block_intercity_purchases?: boolean;
     home_city?: string;
     gambling?: boolean;
     adult_entertainment?: boolean;

@@ -2,9 +2,12 @@ import {useAuth} from "./UseAuth.jsx";
 import {Navigate, Outlet} from "react-router-dom";
 
 const PrivateRoutesBank = () => {
-    const {user} = useAuth()
+    const {user, userRole} = useAuth()
 
-    return (user && user.labels.includes('bank')) ? <Outlet /> : <Navigate to="/login"/>
+    console.log(user);
+    console.log(userRole);
+
+    return (user && userRole === 'manager') ? <Outlet /> : <Navigate to="/login"/>;
 }
 
 export default PrivateRoutesBank;
