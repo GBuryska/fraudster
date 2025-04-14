@@ -31,9 +31,9 @@ function TransactionsPage() {
     );
 
     const getRowColor = (transaction) => {
-        if (transaction.fraud_score <= 70) {
+        if (transaction.transaction_status === 'declined') {
             return 'red-row';
-        } else if (transaction.fraud_score <= 80) {
+        } else if (transaction.transaction_status === 'pending') {
             return 'orange-row';
         } else {
             return 'green-row';

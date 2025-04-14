@@ -17,7 +17,7 @@ function CreateTransaction() {
         const merchant_id = transactionForm.current.merchantId.value
         const merchant_name = transactionForm.current.merchantName.value
         const transaction_location = transactionForm.current.transactionLocation.value
-        const fraud_score = 0
+        const fraud_score = 80
         const online = transactionForm.current.online.checked
 
         const transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online}
@@ -37,12 +37,11 @@ function CreateTransaction() {
                     />
                 </div>
                 <div>
-                    <label>Card Number (Last 4 Digits):</label>
+                    <label>Card Number:</label>
                     <input
                         required
                         type="text"
                         name="cardNumber"
-                        maxLength="4"
                     />
                 </div>
                 <div>
