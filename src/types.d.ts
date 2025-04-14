@@ -40,3 +40,14 @@ export interface Users {
     bank_id?: string;
     card_number?: string;
 }
+
+export interface Merchant{
+    merchant_id: string;
+    location: string;
+    category: string;
+    name: string;
+    transaction_count: number;
+    fraud_count: number;
+    review_sum: number;
+    review_total: number;
+}
