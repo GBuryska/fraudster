@@ -1,6 +1,6 @@
 import {databases} from "../appwriteConfig"
 import {Query} from "appwrite";
-import {Settings} from "../types";
+import {Settings, Transaction} from "../types";
 
 // @ts-ignore
 export async function createSettings(id: string): void {
@@ -52,4 +52,12 @@ export async function updateSettings(userId: string, settings: Settings): Promis
         userId,
         settings
     )
+}
+
+export function checkSettings(transaction: Transaction, settings:　Settings):string {
+    if (settings.home_city) {
+
+    }
+
+    return 'approved'
 }
