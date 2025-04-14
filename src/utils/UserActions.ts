@@ -1,9 +1,10 @@
 import {databases} from "../appwriteConfig"
 import {Query} from "appwrite";
+import {Users} from "../types";
 
 
 // @ts-ignore
-export async function createCustomer(userInfo: { customer_id: string; manager_id: string; card_number: string; }): void {
+export async function createCustomer(userInfo: Users): void {
     await databases.createDocument(
         '67e04d26003294165c25',
         '67f6889e00255a804510',
