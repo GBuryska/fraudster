@@ -1,0 +1,4 @@
+/*
+    This file will be used exclusively for the fraud detection algorithm.
+    We will call on this code in other files when needed.
+ */

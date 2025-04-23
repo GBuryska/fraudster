@@ -58,6 +58,5 @@ export function checkSettings(transaction: Transaction, settings:　Settings):st
     if (settings.home_city) {
 
     }
-
     return 'approved'
 }
