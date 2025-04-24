@@ -55,8 +55,23 @@ export async function updateSettings(userId: string, settings: Settings): Promis
 }
 
 export function checkSettings(transaction: Transaction, settings:　Settings):string {
-    if (settings.home_city) {
+    let approved = true;
 
+    // checkLocation
+
+    // checkSpending
+
+    // checkCategory
+
+    // checkDate
+    let theDate = new Date()
+    theDate.setDate(theDate.getDate()-7);
+    console.log(theDate.toLocaleDateString());
+
+
+    if (approved) {
+        return 'approved'
+    } else {
+        return 'declined'
     }
-    return 'approved'
 }
