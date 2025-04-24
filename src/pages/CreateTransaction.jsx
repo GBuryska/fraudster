@@ -1,10 +1,11 @@
 import React, {useRef} from "react";
 import {createTransaction} from "../utils/TransactionActions.js";
+import {checkSettings, getSettings} from "../utils/SettingsActions.js";
 
 function CreateTransaction() {
     const transactionForm = useRef(null)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         const customer_id = transactionForm.current.customerId.value
@@ -13,14 +14,16 @@ function CreateTransaction() {
         const transaction_amount = parseFloat(transactionForm.current.transactionAmount.value)
         const transaction_currency = transactionForm.current.transactionCurrency.value
         const transaction_type = transactionForm.current.transactionType.value
-        const transaction_status = transactionForm.current.transactionStatus.value
+        let transaction_status = transactionForm.current.transactionStatus.value
         const merchant_id = transactionForm.current.merchantId.value
         const merchant_name = transactionForm.current.merchantName.value
         const transaction_location = transactionForm.current.transactionLocation.value
         const fraud_score = 80
         const online = transactionForm.current.online.checked
 
-        const transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online}
+        let transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online}
+        transaction_status = await checkSettings(transaction, await getSettings(transaction.customer_id))
+        transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online}
 
         createTransaction(transaction)
     }

@@ -42,7 +42,6 @@ function TransactionsPage() {
 
     const openTransaction = (transaction) => {
         setPopUp(transaction);
-        console.log(transaction);
     }
 
     const closeTransaction = () => {
@@ -64,7 +63,7 @@ function TransactionsPage() {
                                 </button>
                             </div>
                             <span>{`Card Number: ${popUp.card_number.replace(/[-\s]/g, '').match(/\d{1,4}/g)?.join('-')}`}</span>
-                            <span>{`Date: ${new Date(popUp.transaction_timestamp).toLocaleString()}`}</span>
+                            <span>{`Date: ${new Date(popUp.transaction_timestamp).toString()}`}</span>
                             <span>{`Type: ${popUp.transaction_type}`}</span>
                             <span style={{color: 'green'}}>{popUp.transaction_amount > 0 && `Deposit: $${popUp.transaction_amount.toFixed(2)}`}</span>
                             <span style={{color: 'red'}}>{popUp.transaction_amount < 0 && `Withdrawal: $${popUp.transaction_amount.toFixed(2).slice(1)}`}</span>

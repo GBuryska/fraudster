@@ -73,3 +73,26 @@ export async function getPendingTransactions(userId: string): Promise<Transactio
         online: doc.online
     }));
 }
+
+// @ts-ignore
+export async function getAmountSpent(userId: string, timestamp: string): Promise<number> {
+    const response = await databases.listDocuments(
+        '67e04d26003294165c25',
+        '67e04d2f0004159d8c8a',
+        [
+            Query.limit(1000),
+            Query.equal('customer_id', userId),
+            Query.equal('transaction_status', 'approved'),
+            Query.greaterThanEqual('transaction_timestamp', timestamp),
+            Query.lessThan('transaction_amount', 0),
+            Query.select(['transaction_amount'])
+        ]
+    );
+
+    let theAmount = 0
+    response.documents.forEach((doc) => {
+        theAmount -= doc.transaction_amount
+    })
+
+    return theAmount;
+}

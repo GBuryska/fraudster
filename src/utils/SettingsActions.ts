@@ -1,6 +1,7 @@
 import {databases} from "../appwriteConfig"
 import {Query} from "appwrite";
 import {Settings, Transaction} from "../types";
+import {getAmountSpent} from "./TransactionActions";
 
 // @ts-ignore
 export async function createSettings(id: string): void {
@@ -53,21 +54,50 @@ export async function updateSettings(userId: string, settings: Settings): Promis
         settings
     )
 }
-
-export function checkSettings(transaction: Transaction, settings:　Settings):string {
+// @ts-ignore
+export async function checkSettings(transaction: Transaction, settings:　Settings): Promise<string> {
     let approved = true;
 
     // checkLocation
+    // array for street address, city, state, country
+    let transactionArr = transaction.transaction_location.split(', ')
+
+    settings.home_city && settings.home_city !== '' && transactionArr[1] !== settings.home_city ? approved = false : approved;
+    settings.home_state && settings.home_state !== '' && transactionArr[2] !== settings.home_state ? approved = false : approved;
+    transactionArr[3] && transactionArr[3] !== 'USA' ? approved = false : approved;
+
+    settings.block_online_purchases && transaction.online ? approved = false : approved;
 
     // checkSpending
+    settings.purchase_limit && settings.purchase_limit < -transaction.transaction_amount ? approved = false : approved;
+    let theDate = new Date(transaction.transaction_timestamp)
+    theDate.setDate(theDate.getDate()-1);
+    settings.daily_limit && await getAmountSpent(transaction.customer_id, theDate.toISOString()) - transaction.transaction_amount > settings.daily_limit ? approved = false : approved;
+    theDate.setDate(theDate.getDate()-6);
+    settings.weekly_limit && await getAmountSpent(transaction.customer_id, theDate.toISOString()) - transaction.transaction_amount > settings.weekly_limit ? approved = false : approved;
+    theDate.setDate(theDate.getDate()-23);
+    settings.monthly_limit && await getAmountSpent(transaction.customer_id, theDate.toISOString()) - transaction.transaction_amount > settings.monthly_limit ? approved = false : approved;
 
     // checkCategory
+    const blockedCategories: { [key: string]: boolean } = {
+        gambling: settings.gambling,
+        adult_entertainment: settings.adult_entertainment,
+        liquor_store: settings.liquor_stores
+    };
 
-    // checkDate
-    let theDate = new Date()
-    theDate.setDate(theDate.getDate()-7);
-    console.log(theDate.toLocaleDateString());
+    const categoryKey = transaction.transaction_type.toLowerCase().replace(/\s/g, '_');
+    console.log(categoryKey);
+    if (blockedCategories[categoryKey]) {
+        approved = false;
+    }
 
+    // checkTime
+    theDate = new Date(transaction.transaction_timestamp)
+    if(settings.start_time < settings.end_time) {
+        theDate.toTimeString() > settings.start_time && theDate.toTimeString() < settings.end_time ? approved = false : approved
+    } else {
+        theDate.toTimeString() > settings.start_time || theDate.toTimeString() < settings.end_time ? approved = false : approved
+    }
 
     if (approved) {
         return 'approved'
