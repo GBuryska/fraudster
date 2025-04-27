@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar.jsx";
 import {ID} from "appwrite";
 import {createCustomer} from "../utils/UserActions.js";
 import {createSettings} from "../utils/SettingsActions.js";
+import NavMan from "../components/NavMan.jsx";
 
 const CreateCustomer = () => {
     const {user, registerUser} = useAuth()
@@ -29,6 +30,7 @@ const CreateCustomer = () => {
     return (
         <>
             <Navbar className="navbar" />
+            <NavMan selected="create-customer"/>
             <div className="page">
                 <form onSubmit={handleSubmit} ref={registerForm} className={"login-form"}>
                     <div className={"login-fields"}>
