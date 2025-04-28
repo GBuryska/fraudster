@@ -6,8 +6,8 @@ function NavCus(props) {
     const navigate = useNavigate();
     return (
         <nav className="navcus">
-            <button className={`navbar-option ${selected === 'transactions' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/transactions')}>Transactions</button>
-            <button className={`navbar-option ${selected === 'review' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/review')}>Review</button>
+            <button className={`navbar-option ${selected === 'transactions' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/transaction-list')}>Transactions</button>
+            <button className={`navbar-option ${selected === 'pending-action' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/pending-action')}>Review</button>
             <button className={`navbar-option ${selected === 'settings' ? 'selected' : 'notSelected'}`} onClick={() => navigate('/settings')}>Settings</button>
         </nav>
     );

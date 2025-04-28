@@ -2,6 +2,7 @@ import {databases} from "../appwriteConfig"
 import {Query} from "appwrite";
 import {Settings, Transaction} from "../types";
 import {getAmountSpent} from "./TransactionActions";
+import {getMerchant} from "./MerchantActions";
 
 // @ts-ignore
 export async function createSettings(id: string): void {
@@ -30,7 +31,6 @@ export async function getSettings(userId: string): Promise<Settings> {
             customer_id: doc.customer_id,
             start_time: doc.start_time,
             end_time: doc.end_time,
-            fraudscore_detection: doc.fraudscore_detection,
             daily_limit: doc.daily_limit,
             weekly_limit: doc.weekly_limit,
             monthly_limit: doc.monthly_limit,
@@ -46,7 +46,7 @@ export async function getSettings(userId: string): Promise<Settings> {
 }
 
 // @ts-ignore
-export async function updateSettings(userId: string, settings: Settings): Promise<Settings> {
+export async function updateSettings(userId: string, settings: Settings): void {
     await databases.updateDocument(
         '67e04d26003294165c25',
         '67f687b7002e607baeef',
@@ -99,9 +99,17 @@ export async function checkSettings(transaction: Transaction, settings:　Settin
         theDate.toTimeString() > settings.start_time || theDate.toTimeString() < settings.end_time ? approved = false : approved
     }
 
-    if (approved) {
-        return 'approved'
-    } else {
+    // merchant check
+    const merchant = await getMerchant(transaction.merchant_id)
+    const merchantRate = merchant.fraud_count/merchant.transaction_count
+
+    if (!approved) {
         return 'declined'
+    } else if (merchantRate >= .3) {
+        return 'declined'
+    } else if (merchantRate >= .1) {
+        return 'pending'
+    } else {
+        return 'approved'
     }
 }

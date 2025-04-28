@@ -12,11 +12,11 @@ const Login = () => {
     useEffect(  () => {
         if (user) {
             if (userRole === 'customer') {
-                navigate('/transactions')
+                navigate('/transaction-list')
             } else if (userRole === 'manager') {
                 navigate('/create-customer')
             } else if (userRole === 'bank') {
-                navigate('/admintransactions')
+                navigate('/merchant-list')
             }
         }
     }, [user, navigate])

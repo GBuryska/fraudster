@@ -39,7 +39,7 @@ export const AuthProvider = ({children}) => {
         setLoading(true)
 
         try{
-            await account.create(userInfo.customer_id, userInfo.email, userInfo.password, userInfo.name);
+            await account.create(userInfo.customer_id || userInfo.manager_id, userInfo.email, userInfo.password, userInfo.name);
             
         }catch(error){
             console.error(error)

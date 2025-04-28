@@ -1,5 +1,5 @@
 export interface Transaction {
-    $transaction_id: string;
+    transaction_id: string;
     customer_id: string;
     card_number: string;
     transaction_timestamp: string;
@@ -12,6 +12,8 @@ export interface Transaction {
     transaction_location: string;
     fraud_score: number;
     online: boolean;
+    is_fraud: boolean;
+    manager_id: string;
 }
 
 // add the settings here
@@ -20,7 +22,6 @@ export interface Settings {
     customer_id: string;
     start_time?: string;
     end_time?: string;
-    fraudscore_detection?: boolean;
     daily_limit?: number;
     weekly_limit?: number;
     monthly_limit?: number;
@@ -41,13 +42,12 @@ export interface Users {
     card_number?: string;
 }
 
-export interface Merchant{
-    merchant_id: string;
+export interface Merchant {
+    merchant_id: number;
     location: string;
     category: string;
     name: string;
     transaction_count: number;
     fraud_count: number;
-    review_sum: number;
-    review_total: number;
+    bank_id: string;
 }

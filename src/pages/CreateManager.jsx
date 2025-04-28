@@ -2,37 +2,32 @@ import React, { useRef } from 'react'
 import {useAuth} from "../utils/UseAuth.jsx";
 import Navbar from "../components/Navbar.jsx";
 import {ID} from "appwrite";
-import {createCustomer, getUser} from "../utils/UserActions.js";
-import {createSettings} from "../utils/SettingsActions.js";
-import NavMan from "../components/NavMan.jsx";
+import {createManager} from "../utils/UserActions.js";
+import NavBank from "../components/NavBank.jsx";
 
-const CreateCustomer = () => {
+const CreateManager = () => {
     const {user, registerUser} = useAuth()
 
     const registerForm = useRef(null)
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
         const email = registerForm.current.email.value
         const password = registerForm.current.password.value
         const name = registerForm.current.name.value
-        const card_number = registerForm.current.card_number.value
-        const manager_id = user.$id;
-        const customer_id = ID.unique();
-        const { bank_id } = await getUser(manager_id);
+        const manager_id = ID.unique();
+        const bank_id = user.$id
 
-
-        const userInfo = {customer_id, email, password, name, manager_id, card_number, bank_id}
+        const userInfo = {email, password, name, manager_id, bank_id}
 
         registerUser(userInfo)
-        createCustomer(userInfo)
-        createSettings(customer_id)
+        createManager(userInfo)
     }
 
     return (
         <>
             <Navbar className="navbar" />
-            <NavMan selected="create-customer"/>
+            <NavBank selected="create-manager"/>
             <div className="page">
                 <form onSubmit={handleSubmit} ref={registerForm} className={"reguser-form"}>
                     <div className={"login-fields"}>
@@ -41,7 +36,7 @@ const CreateCustomer = () => {
                             required
                             type="email"
                             name="email"
-                            placeholder="Customer email..."
+                            placeholder="Manager email..."
                         />
                     </div>
                     <div className={"login-fields"}>
@@ -50,7 +45,7 @@ const CreateCustomer = () => {
                             required
                             type="text"
                             name="password"
-                            placeholder="Customer password..."
+                            placeholder="Manager password..."
                         />
                     </div>
                     <div className={"login-fields"}>
@@ -59,16 +54,7 @@ const CreateCustomer = () => {
                             required
                             type="text"
                             name="name"
-                            placeholder="Customer name..."
-                        />
-                    </div>
-                    <div className={"login-fields"}>
-                        <label>Card Number:</label>
-                        <input
-                            required
-                            type="text"
-                            name="card_number"
-                            placeholder="Card number..."
+                            placeholder="Manager name..."
                         />
                     </div>
 
@@ -84,4 +70,4 @@ const CreateCustomer = () => {
     )
 }
 
-export default CreateCustomer;
+export default CreateManager;

@@ -1,6 +1,8 @@
 import React, {useRef} from "react";
 import {createTransaction} from "../utils/TransactionActions.js";
 import {checkSettings, getSettings} from "../utils/SettingsActions.js";
+import {getID} from "../utils/UserActions.js";
+import {getMerchant, updateMerchantTotals} from "../utils/MerchantActions.js";
 
 function CreateTransaction() {
     const transactionForm = useRef(null)
@@ -8,37 +10,36 @@ function CreateTransaction() {
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        const customer_id = transactionForm.current.customerId.value
         const card_number = transactionForm.current.cardNumber.value
-        const transaction_timestamp = transactionForm.current.transactionTimestamp.value
+        const transaction_timestamp = new Date()
         const transaction_amount = parseFloat(transactionForm.current.transactionAmount.value)
-        const transaction_currency = transactionForm.current.transactionCurrency.value
-        const transaction_type = transactionForm.current.transactionType.value
-        let transaction_status = transactionForm.current.transactionStatus.value
         const merchant_id = transactionForm.current.merchantId.value
-        const merchant_name = transactionForm.current.merchantName.value
-        const transaction_location = transactionForm.current.transactionLocation.value
-        const fraud_score = 80
+        updateMerchantTotals(merchant_id, 'increaseTotal')
         const online = transactionForm.current.online.checked
+        const { customer_id, manager_id } = await getID(card_number)
 
-        let transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online}
+        let transaction_status = ''
+        let fraud_score = 0
+        let transaction_currency = 'usd'
+
+        const {name, location, category} = await getMerchant(merchant_id)
+        const merchant_name = name;
+        const transaction_location = location;
+        const transaction_type = category;
+
+        const is_fraud = false;
+
+        let transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online, is_fraud, manager_id}
         transaction_status = await checkSettings(transaction, await getSettings(transaction.customer_id))
-        transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online}
+        transaction = {customer_id, card_number, transaction_timestamp, transaction_amount, transaction_currency, transaction_type, transaction_status, merchant_id, merchant_name, transaction_location, fraud_score, online, is_fraud, manager_id}
 
-        createTransaction(transaction)
+        await createTransaction(transaction)
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit} ref={transactionForm}>
-                <div>
-                    <label>Customer ID:</label>
-                    <input
-                        required
-                        type="text"
-                        name="customerId"
-                    />
-                </div>
+
                 <div>
                     <label>Card Number:</label>
                     <input
@@ -47,14 +48,7 @@ function CreateTransaction() {
                         name="cardNumber"
                     />
                 </div>
-                <div>
-                    <label>Transaction Timestamp:</label>
-                    <input
-                        required
-                        type="datetime-local"
-                        name="transactionTimestamp"
-                    />
-                </div>
+
                 <div>
                     <label>Transaction Amount:</label>
                     <input
@@ -64,31 +58,7 @@ function CreateTransaction() {
                         step="0.01"
                     />
                 </div>
-                <div>
-                    <label>Transaction Currency:</label>
-                    <select required name="transactionCurrency">
-                        <option value="USD">USD</option>
-                        <option value="EUR">EUR</option>
-                        <option value="CAD">CAD</option>
-                        <option value="MXN">MXN</option>
-                    </select>
-                </div>
-                <div>
-                    <label>Transaction Type:</label>
-                    <input
-                        required
-                        type="text"
-                        name="transactionType"
-                    />
-                </div>
-                <div>
-                    <label>Transaction Status:</label>
-                    <select required name="transactionStatus">
-                        <option value="approved">Approved</option>
-                        <option value="pending">Pending</option>
-                        <option value="declined">Declined</option>
-                    </select>
-                </div>
+
                 <div>
                     <label>Merchant ID:</label>
                     <input
@@ -96,29 +66,7 @@ function CreateTransaction() {
                         name="merchantId"
                     />
                 </div>
-                <div>
-                    <label>Merchant Name:</label>
-                    <input
-                        required
-                        type="text"
-                        name="merchantName"
-                    />
-                </div>
-                <div>
-                    <label>Transaction Location:</label>
-                    <input
-                        type="text"
-                        name="transactionLocation"
-                    />
-                </div>
-                <div>
-                    <label>Fraud Score:</label>
-                    <input
-                        type="text"
-                        name="fraudScore"
-                        step=".01"
-                    />
-                </div>
+
                 <div>
                     <label>Online:</label>
                     <input

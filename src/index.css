@@ -244,32 +244,12 @@ code {
   }
 }
 
-/*
-old
-.login {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100vw;
-  background-image: linear-gradient(to right, lightblue, lightcyan);
-
-  .login-form {
-    background-color: whitesmoke;
-    color: black;
-    padding: 20px;
-    border: black solid 1px;
-    border-radius: 10px;
-  }
-
-  .login-fields {
-    display: flex;
-    flex-direction: column;
-    padding: 5px;
-  }
+.reguser-form {
+  background-color: whitesmoke;
+  color: black;
+  padding: 20px;
+  border: black solid 1px;
 }
-*/
 
 .load_more {
   width: 100%;

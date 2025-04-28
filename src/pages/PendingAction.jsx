@@ -1,22 +1,20 @@
-import React, {useEffect, useState} from 'react';
 import Navbar from "../components/Navbar.jsx";
-import {getTransactions, updateFlag} from "../utils/TransactionActions.js";
-import {useAuth} from "../utils/UseAuth.jsx";
 import NavCus from "../components/NavCus.jsx";
-import {updateMerchantTotals} from "../utils/MerchantActions.js";
+import React, {useEffect, useState} from "react";
+import {useAuth} from "../utils/UseAuth.jsx";
+import {getPendingTransactions, updateTransactionStatus} from "../utils/TransactionActions.js";
 
 const LOAD_AMOUNT = 20;
 
-function TransactionsPage() {
+function PendingAction() {
     const [transactions, setTransactions] = useState([]);
     const [popUp, setPopUp] = useState(null);
     const [index, setIndex] = useState(0);
     const [atEnd, setAtEnd] = useState(false);
     const {user} = useAuth()
-    const [isFlagged, setIsFlagged] = useState(null);
 
     async function fetchData() {
-        const data = await getTransactions(user.$id, index, LOAD_AMOUNT);
+        const data = await getPendingTransactions(user.$id, index, LOAD_AMOUNT);
         if(data.length < LOAD_AMOUNT) {
             setAtEnd(true);
         }
@@ -26,6 +24,7 @@ function TransactionsPage() {
 
     useEffect(() => {
         fetchData();
+        console.log(transactions)
     }, [user]);
 
     const getRowColor = (transaction) => {
@@ -40,24 +39,26 @@ function TransactionsPage() {
 
     const openTransaction = (transaction) => {
         setPopUp(transaction);
-        setIsFlagged(transaction.is_fraud);
     }
 
     const closeTransaction = () => {
         setPopUp(null);
     }
 
-    const flagclicked = async () => {
-        popUp.is_fraud = !popUp.is_fraud;
-        popUp.is_fraud ? updateMerchantTotals(popUp.merchant_id, "increaseFraud") : updateMerchantTotals(popUp.merchant_id, "decreaseFraud")
-        setIsFlagged(popUp.is_fraud);
-        await updateFlag(popUp);
+    const approve = () => {
+        updateTransactionStatus(popUp, 'approved');
+        setPopUp(null);
+    }
+
+    const decline = () => {
+        updateTransactionStatus(popUp, 'declined');
+        setPopUp(null);
     }
 
     return (
         <>
-            <Navbar className="navbar" />
-            <NavCus selected='transactions'/>
+            <Navbar />
+            <NavCus selected='pending-action'/>
             <div className="page">
                 {popUp &&
                     <div className={'popup-container'}>
@@ -65,9 +66,6 @@ function TransactionsPage() {
                             <div className={'popup-header'}>
                                 <strong>{`ID: ${popUp.transaction_id}`}</strong>
                                 <div>
-                                    <button style={isFlagged ? {color: 'red'} : {color: 'black'}} onClick={flagclicked} >
-                                        ⚑
-                                    </button>
                                     <button onClick={closeTransaction}>
                                         &times;
                                     </button>
@@ -80,18 +78,26 @@ function TransactionsPage() {
                             <span style={{color: 'red'}}>{popUp.transaction_amount < 0 && `Withdrawal: $${popUp.transaction_amount.toFixed(2).slice(1)}`}</span>
                             <span>{`Merchant: ${popUp.merchant_name}`}</span>
                             <span>{`Location: ${popUp.transaction_location}`}</span>
+                            <div style={{justifyContent: 'center', marginTop: '20px'}} className={'popup-header'}>
+                                <button onClick={approve} style={{paddingRight: '20px', paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'whitesmoke', border: '1px, solid, black'}}>
+                                    Approve
+                                </button>
+                                <button onClick={decline} style={{paddingRight: '20px', paddingLeft: '20px', paddingTop: '10px', paddingBottom: '10px', backgroundColor: 'whitesmoke', border: '1px, solid, black'}}>
+                                    Decline
+                                </button>
+                            </div>
                         </div>
                     </div>
                 }
                 <table className={`transaction-table ${popUp ? 'popup-visible' : ''}`}>
                     <thead className="transaction-head">
-                        <tr>
-                            <th>Transaction ID</th>
-                            <th>Date</th>
-                            <th>Merchant</th>
-                            <th>Deposits</th>
-                            <th>Withdrawals</th>
-                        </tr>
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>Date</th>
+                        <th>Merchant</th>
+                        <th>Deposits</th>
+                        <th>Withdrawals</th>
+                    </tr>
                     </thead>
                     <tbody>
                     {transactions.map((transaction) => (
@@ -114,7 +120,7 @@ function TransactionsPage() {
                 }
             </div>
         </>
-    );
+    )
 }
 
-export default TransactionsPage;
+export default PendingAction;
